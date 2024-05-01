@@ -49,12 +49,24 @@ func TestBuyErrorsIfNoCopiesLeft(t *testing.T) {
 func TestGetAllBooks(t *testing.T) {
 	t.Parallel()
 	catalog := map[int]bookstore.Book{
-		1: {Title: "For the Love of Go"},
-		2: {Title: "The Power of Go: Tools"},
+		1: {
+			Title: "For the Love of Go",
+			ID:    1,
+		},
+		2: {
+			Title: "The Power of Go: Tools",
+			ID:    2,
+		},
 	}
 	want := []bookstore.Book{
-		{Title: "The Power of Go: Tools"},
-		{Title: "For the Love of Go"},
+		{
+			Title: "For the Love of Go",
+			ID:    1,
+		},
+		{
+			Title: "The Power of Go: Tools",
+			ID:    2,
+		},
 	}
 	got := bookstore.GetAllBooks(catalog)
 	// Seems to always come out sorted
@@ -91,5 +103,18 @@ func TestGetBookBadIDReturnsError(t *testing.T) {
 	_, err := bookstore.GetBook(catalog, 999)
 	if err == nil {
 		t.Fatal("want error for non-existent ID, got nil")
+	}
+}
+
+func TestNetPriceCents(t *testing.T) {
+	t.Parallel()
+	want := 1500
+	b := bookstore.Book{
+		PriceCents:      2000,
+		DiscountPercent: 25,
+	}
+	got := bookstore.NetPriceCents(b)
+	if got != want {
+		t.Errorf("want %d, got %d, for price %d and discount %d", want, got, b.PriceCents, b.DiscountPercent)
 	}
 }
