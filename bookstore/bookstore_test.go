@@ -48,7 +48,7 @@ func TestBuyErrorsIfNoCopiesLeft(t *testing.T) {
 
 func TestGetAllBooks(t *testing.T) {
 	t.Parallel()
-	catalog := map[int]bookstore.Book{
+	catalog := bookstore.Catalog{
 		1: {
 			Title: "For the Love of Go",
 			ID:    1,
@@ -68,7 +68,7 @@ func TestGetAllBooks(t *testing.T) {
 			ID:    2,
 		},
 	}
-	got := bookstore.GetAllBooks(catalog)
+	got := catalog.GetAllBooks()
 	// Seems to always come out sorted
 	if !cmp.Equal(want, got) {
 		t.Error(cmp.Diff(want, got))
@@ -77,7 +77,7 @@ func TestGetAllBooks(t *testing.T) {
 
 func TestGetBook(t *testing.T) {
 	t.Parallel()
-	catalog := map[int]bookstore.Book{
+	catalog := bookstore.Catalog{
 		1: {
 			Title: "For the Love of Go",
 		},
@@ -88,7 +88,7 @@ func TestGetBook(t *testing.T) {
 	want := bookstore.Book{
 		Title: "For the Love of Go",
 	}
-	got, err := bookstore.GetBook(catalog, 1)
+	got, err := catalog.GetBook(1)
 	if err != nil {
 		t.Fatal()
 	}
@@ -99,8 +99,8 @@ func TestGetBook(t *testing.T) {
 
 func TestGetBookBadIDReturnsError(t *testing.T) {
 	t.Parallel()
-	catalog := map[int]bookstore.Book{}
-	_, err := bookstore.GetBook(catalog, 999)
+	catalog := bookstore.Catalog{}
+	_, err := catalog.GetBook(999)
 	if err == nil {
 		t.Fatal("want error for non-existent ID, got nil")
 	}
@@ -113,7 +113,7 @@ func TestNetPriceCents(t *testing.T) {
 		PriceCents:      2000,
 		DiscountPercent: 25,
 	}
-	got := bookstore.NetPriceCents(b)
+	got := b.NetPriceCents()
 	if got != want {
 		t.Errorf("want %d, got %d, for price %d and discount %d", want, got, b.PriceCents, b.DiscountPercent)
 	}
