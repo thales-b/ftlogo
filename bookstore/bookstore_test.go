@@ -48,15 +48,16 @@ func TestBuyErrorsIfNoCopiesLeft(t *testing.T) {
 
 func TestGetAllBooks(t *testing.T) {
 	t.Parallel()
-	catalog := []bookstore.Book{
-		{Title: "For the Love of Go"},
-		{Title: "The Power of Go: Tools"},
+	catalog := map[int]bookstore.Book{
+		1: {Title: "For the Love of Go"},
+		2: {Title: "The Power of Go: Tools"},
 	}
 	want := []bookstore.Book{
-		{Title: "For the Love of Go"},
 		{Title: "The Power of Go: Tools"},
+		{Title: "For the Love of Go"},
 	}
 	got := bookstore.GetAllBooks(catalog)
+	// Seems to always come out sorted
 	if !cmp.Equal(want, got) {
 		t.Error(cmp.Diff(want, got))
 	}
@@ -64,22 +65,31 @@ func TestGetAllBooks(t *testing.T) {
 
 func TestGetBook(t *testing.T) {
 	t.Parallel()
-	catalog := []bookstore.Book{
-		{
-			ID:    1,
+	catalog := map[int]bookstore.Book{
+		1: {
 			Title: "For the Love of Go",
 		},
-		{
-			ID:    2,
+		2: {
 			Title: "The Power of Go: Tools",
 		},
 	}
 	want := bookstore.Book{
-		ID:    2,
-		Title: "The Power of Go: Tools",
+		Title: "For the Love of Go",
 	}
-	got := bookstore.GetBook(catalog, 1)
+	got, err := bookstore.GetBook(catalog, 1)
+	if err != nil {
+		t.Fatal()
+	}
 	if !cmp.Equal(want, got) {
 		t.Error(cmp.Diff(want, got))
+	}
+}
+
+func TestGetBookBadIDReturnsError(t *testing.T) {
+	t.Parallel()
+	catalog := map[int]bookstore.Book{}
+	_, err := bookstore.GetBook(catalog, 999)
+	if err == nil {
+		t.Fatal("want error for non-existent ID, got nil")
 	}
 }
