@@ -26,7 +26,7 @@ func Xor(x, y bool) bool {
 func Greet(person string) string {
 	switch person {
 	case "Alice":
-		return "hey, Alice."
+		return "Hey, Alice."
 	case "Bob":
 		return "What's up, Bob?"
 	default:
@@ -42,19 +42,24 @@ func Total(slice []int) int {
 	return sum
 }
 
-func Evens() {
+func Evens() []int {
+	var result []int
 	for i := 0; i < 101; i++ {
 		if i%2 == 0 {
-			fmt.Println(i)
+			result = append(result, i)
 		}
 	}
+	return result
 }
 
-func NonNegative(slice []int) {
-	for _, e := range slice {
+func NonNegative(s []int) []int {
+	var result []int
+	for _, e := range s {
 		if e < 0 {
 			continue
 		}
 		fmt.Println(e)
+		result = append(result, e)
 	}
+	return result
 }
