@@ -1,10 +1,12 @@
 package fcts
 
-import "errors"
+import (
+	"fmt"
+)
 
 func Withdraw(balance, amount int) (int, error) {
 	if amount > balance {
-		return 0, errors.New("withdrawal amount %d superior to current balance %d", amount, balance)
+		return 0, fmt.Errorf("withdrawal amount %d superior to current balance %d", amount, balance)
 	}
 	return balance - amount, nil
 }
@@ -22,9 +24,9 @@ func AddMany(inputs ...float64) float64 {
 }
 
 func ComputeMany(f func(float64, float64) float64, inputs ...float64) float64 {
-	var result float64
+	result := inputs[0]
 	for i := 1; i < len(inputs); i++ {
-		result = f(inputs[i-1], inputs[i])
+		result = f(result, inputs[i])
 	}
 	return result
 }

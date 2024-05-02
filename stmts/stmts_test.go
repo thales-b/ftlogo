@@ -7,6 +7,7 @@ import (
 )
 
 func TestBigger(t *testing.T) {
+	t.Parallel()
 	type TestCase struct {
 		a, b int
 		want int
@@ -25,6 +26,7 @@ func TestBigger(t *testing.T) {
 }
 
 func TestXor(t *testing.T) {
+	t.Parallel()
 	type TestCase struct {
 		a, b bool
 		want bool
@@ -44,6 +46,7 @@ func TestXor(t *testing.T) {
 }
 
 func TestGreet(t *testing.T) {
+	t.Parallel()
 	type TestCase struct {
 		p    string
 		want string
@@ -62,6 +65,7 @@ func TestGreet(t *testing.T) {
 }
 
 func TestTotal(t *testing.T) {
+	t.Parallel()
 	s := []int{1, 2, 3}
 	want := 6
 	got := stmts.Total(s)
@@ -71,6 +75,7 @@ func TestTotal(t *testing.T) {
 }
 
 func TestEvens(t *testing.T) {
+	t.Parallel()
 	want := []int{0, 2, 4}
 	var got []int
 	result := stmts.Evens()
@@ -83,6 +88,7 @@ func TestEvens(t *testing.T) {
 }
 
 func TestNonNegative(t *testing.T) {
+	t.Parallel()
 	s := []int{-1, 0, -2, 3}
 	want := []int{0, 3}
 	got := stmts.NonNegative(s)
